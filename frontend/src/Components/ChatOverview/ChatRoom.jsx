@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import React, { Component } from 'react';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -34,7 +35,7 @@ const ChatRoom = () => {
     socket.current.disconnect();
   };
   useEffect(() => {
-    socket.current = io("https://reddat-socket.onrender.com", {
+    socket.current = io("http://localhost:8000", {
       transports: ["websocket"],
     });
     socket.current.on("getMessage", (data) => {
@@ -112,14 +113,14 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
+    return scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   return (
     <section className="convo-container">
       <div className="convo-header">
         <div className="message-header">
           <div className="go-back-convo" onClick={handleGoBack}>
-            <IoIosArrowRoundBack size={"42px"}/>
+            <IoIosArrowRoundBack size={"42px"} />
           </div>
           {partner?.username}{" "}
         </div>

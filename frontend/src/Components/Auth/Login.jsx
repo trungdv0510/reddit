@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/apiRequests";
 import InputField from "../InputFields/Input";
 import Loading from "../Loading/Loading";
+import React, { Component }  from 'react';
 import "./login.css";
 
 const Login = () => {

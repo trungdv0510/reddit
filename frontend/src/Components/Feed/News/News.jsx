@@ -4,6 +4,7 @@ import useFetchData from "../../Hooks/useFetchData";
 import Loading from "../../Loading/Loading";
 import FeedLayout from "../Layout/FeedLayout";
 import NewsList from "./NewsList";
+import React, { Component }  from 'react';
 import "./news.css";
 import { baseURL } from "../../../utils/listContainer";
 

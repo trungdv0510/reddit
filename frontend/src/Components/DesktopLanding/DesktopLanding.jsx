@@ -1,6 +1,7 @@
 import "./desktoplanding.css";
 import desktopMockup from "../../assets/desktop-landing.png";
 import { useNavigate } from "react-router-dom";
+import React, { Component }  from 'react';
 const LandingPage = () => {
   const navigate = useNavigate();
 

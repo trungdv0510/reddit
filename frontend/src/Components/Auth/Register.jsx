@@ -4,7 +4,7 @@ import { registerUser } from "../../redux/apiRequests";
 import * as Yup from "yup";
 import "./register.css";
 import { useFormik } from "formik";
-
+import React, { Component }  from 'react';
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import { baseURL } from "../../utils/listContainer";
 import Loading from "../Loading/Loading";
 import Posts from "../Posts/Posts";
 import FullPost from "../Posts/FullPost/FullPost";
-
+import React, { Component }  from 'react';
 const Friends = () => {
   const fullPost = useSelector((state) => state.nav.fullPost);
   const user = useSelector((state) => state.user.user?.currentUser);

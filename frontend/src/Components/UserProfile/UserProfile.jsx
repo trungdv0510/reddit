@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { getUserPost } from "../../redux/apiRequests";
 import { useParams } from "react-router-dom";
 import FullPost from "../Posts/FullPost/FullPost";
-
+import React, { Component }  from 'react';
 const UserProfile = (props) => {
   const { isEdit, setEdit } = props;
   const { id } = useParams();

@@ -28,11 +28,20 @@ app.use(
     parameterLimit: 50000,
   })
 );
+const corsOptions ={
+  origin:'http://localhost:3000', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200
+}
 app.use(cors());
 app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("common"));
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 //Routes
 app.get("/v1/", (req,res)=>{
   res.send("Hello world");
@@ -44,6 +53,6 @@ app.use("/v1/news", newsRoute);
 app.use("/v1/conversation", conversationRoute);
 app.use("/v1/message", messageRoute);
 
-app.listen(process.env.PORT || 8000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server is running");
 });

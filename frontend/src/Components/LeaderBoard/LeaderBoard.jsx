@@ -7,6 +7,7 @@ import useFetchData from "../Hooks/useFetchData";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import React, { Component }  from 'react';
 const LeaderBoard = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user?.currentUser);

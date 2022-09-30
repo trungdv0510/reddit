@@ -1,6 +1,7 @@
 import "./landing.css";
 import phoneMockup from "../../assets/phone.png";
 import { useNavigate } from "react-router-dom";
+import React, { Component }  from 'react';
 const LandingPage = () => {
   const navigate = useNavigate();
   const goToSignIn = () => {

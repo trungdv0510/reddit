@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom";
 import { unmountPost } from "../../../redux/postSlice";
 import Loading from "../../Loading/Loading";
 import useInfiniteScroll from "../../Hooks/useInfiniteScroll";
-
+import React, { Component }  from 'react';
 const HomePage = () => {
   const user = useSelector((state) => state.user.user?.currentUser);
   const location = useLocation();

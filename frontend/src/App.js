@@ -15,7 +15,7 @@ import LeaderBoard from "./Components/LeaderBoard/LeaderBoard";
 import LandingPage from "./Components/LandingPage/LandingPage";
 import { useEffect } from "react";
 import DesktopLanding from "./Components/DesktopLanding/DesktopLanding";
-
+import React, { Component }  from 'react';
 function App() {
   const [windowSize, setWindowSize] = useState({
     width: undefined,
