@@ -54,5 +54,5 @@ app.use("/v1/conversation", conversationRoute);
 app.use("/v1/message", messageRoute);
 
 app.listen(process.env.PORT, () => {
-  console.log("Server is running");
+  console.log("Server is running in port {}",process.env.PORT);
 });

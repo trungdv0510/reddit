@@ -35,7 +35,7 @@ const ChatRoom = () => {
     socket.current.disconnect();
   };
   useEffect(() => {
-    socket.current = io("http://localhost:8000", {
+    socket.current = io("http://localhost:8089", {
       transports: ["websocket"],
     });
     socket.current.on("getMessage", (data) => {

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import UserProfile from "./Components/UserProfile/UserProfile";
@@ -7,15 +6,13 @@ import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 import HomePage from "./Components/Feed/HomePage/HomePage";
 import RequireAuth from "./Components/RequireAuth/RequireAuth";
-import News from "./Components/Feed/News/News";
-import Footer from "./Components/Footer/Footer";
 import Friends from "./Components/Friends/Friends";
 import ChatRoom from "./Components/ChatOverview/ChatRoom";
 import LeaderBoard from "./Components/LeaderBoard/LeaderBoard";
 import LandingPage from "./Components/LandingPage/LandingPage";
 import { useEffect } from "react";
 import DesktopLanding from "./Components/DesktopLanding/DesktopLanding";
-import React, { Component }  from 'react';
+import React  from 'react';
 function App() {
   const [windowSize, setWindowSize] = useState({
     width: undefined,
@@ -59,14 +56,15 @@ function App() {
                   </RequireAuth>
                 }
               />
-              <Route
-                path="/news"
-                element={
-                  <RequireAuth>
-                    <News />
-                  </RequireAuth>
-                }
-              />
+              {/*bỏ phần menu news*/}
+              {/*<Route*/}
+              {/*  path="/news"*/}
+              {/*  element={*/}
+              {/*    <RequireAuth>*/}
+              {/*      <News />*/}
+              {/*    </RequireAuth>*/}
+              {/*  }*/}
+              {/*/>*/}
               <Route
                 path="/friends"
                 element={

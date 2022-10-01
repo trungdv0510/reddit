@@ -1,17 +1,16 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import useFetchData from "../../Hooks/useFetchData";
 import Loading from "../../Loading/Loading";
 import FeedLayout from "../Layout/FeedLayout";
 import NewsList from "./NewsList";
-import React, { Component }  from 'react';
+import React  from 'react';
 import "./news.css";
 import { baseURL } from "../../../utils/listContainer";
 
 const News = () => {
   const user = useSelector((state) => state.user.user?.currentUser);
-  const { isLoading, apiData, serverError } = useFetchData(
-    `${baseURL}/news`,
+  const { isLoading, apiData } = useFetchData(
+    `${baseURL}/news?page=10&limit=2`,
     user?.accessToken,
     "get"
   );

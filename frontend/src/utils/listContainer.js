@@ -1,7 +1,8 @@
 export const listContainer = {
   routes: [
     { name: "Home", path: "/" },
-    { name: "News", path: "/news" },
+      // bỏ đi chức năng hiển thị các thông tin hot
+    //{ name: "News", path: "/news" },
     { name: "Friends", path: "/friends" },
   ],
   tags: ["None", "NSFW", "Mood", "Meme", "Shitpost"],
