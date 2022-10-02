@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { makePostToggle } from "../../redux/navigateSlice";
-import React, { Component }  from 'react';
+import React  from 'react';
 import "./footer.css";
 const Footer = () => {
   const isOpenPost = useSelector((state) => state.nav.makepost.open);

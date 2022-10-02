@@ -13,7 +13,6 @@ const userRoute = require("./routes/user");
 const newsRoute = require("./routes/news");
 const messageRoute = require("./routes/message");
 const conversationRoute = require("./routes/conversation");
-
 dotenv.config();
 
 mongoose.connect(process.env.DB_URL, () => {
@@ -28,11 +27,7 @@ app.use(
     parameterLimit: 50000,
   })
 );
-const corsOptions ={
-  origin:'http://localhost:3000', 
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200
-}
+
 app.use(cors());
 app.use(cookieParser());
 app.use(helmet());
@@ -54,5 +49,5 @@ app.use("/v1/conversation", conversationRoute);
 app.use("/v1/message", messageRoute);
 
 app.listen(process.env.PORT, () => {
-  console.log("Server is running in port {}",process.env.PORT);
+  console.log("Server is running in port ",process.env.PORT);
 });

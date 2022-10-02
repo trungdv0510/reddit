@@ -1,20 +1,23 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const { cloudinary } = require("../utils/cloudinary");
-
+const minioUtils = require("../utils/minioUtils");
+const {createFileName,convertToBuffer} = require("../services/fileService");
 const postController = {
   //CREATE A POST
   createPost: async (req, res) => {
     try {
       const users = await User.findById(req.body.userId);
       if (req.body.imageUrl) {
-        const result = await cloudinary.uploader.upload(req.body.imageUrl, {
-          upload_preset: "post_image",
-        });
+        let fileName = createFileName(req.body.imageUrl);
+        let fileBuffer = convertToBuffer(req.body.imageUrl);
+        let url = await minioUtils.uploadFile(fileBuffer, process.env.MINIO_BUCKET_POST, fileName);
+        // const result = await cloudinary.uploader.upload(req.body.imageUrl, {
+        //   upload_preset: "post_image",
+        // });
         const makePost = {
           ...req.body,
-          imageUrl: result.secure_url,
-          cloudinaryId: result.public_id,
+          imageUrl: url,
           username: users.username,
           avaUrl: users.profilePicture,
           theme: users.theme,

@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Message from "./Message";
 import { baseURL } from "../../utils/listContainer";
-import Footer from "../Footer/Footer";
+import UploadImageOrFile from "./UploadImageOrFile";
 import InputField from "../InputFields/Input";
 const ChatRoom = () => {
   const user = useSelector((state) => state.user.user?.currentUser);
@@ -151,7 +151,8 @@ const ChatRoom = () => {
           Send
         </button>
       </div>
-      <Footer />
+      {/*trungdv: remove footer in chatbox*/}
+      <UploadImageOrFile />
     </section>
   );
 };
