@@ -13,3 +13,13 @@
     font-size: 2.5rem;
     cursor: pointer;
 }
+.upload-title>input {
+    display: none;
+}
+.image-upload>input {
+    display: none;
+}
+.image-upload{
+    font-size: 25px;
+}
+

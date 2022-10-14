@@ -1,22 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
-import { makePostToggle } from "../../redux/navigateSlice";
 import React  from 'react';
 import { BiImageAdd } from "react-icons/bi";
 import { BsFillFileArrowUpFill } from "react-icons/bs";
 import "./uploadimageorfile.css";
 const UploadImageOrFile = () => {
-    const isOpenPost = useSelector((state) => state.nav.makepost.open);
-    const dispatch = useDispatch();
-    const handleOpenPost = () => {
-        dispatch(makePostToggle(!isOpenPost));
-    };
     return (
         <footer className="upload">
-            <div className="upload-title" onClick={handleOpenPost}>
-                <BiImageAdd/>
+            <div className="image-upload">
+                <label htmlFor="file-input">
+                  <BiImageAdd/>
+                </label>
+                <input id="file-input" type="file"/>
             </div>
-            <div className="upload-title" onClick={handleOpenPost}>
-                <BsFillFileArrowUpFill/>
+            <div className="image-upload">
+                <label htmlFor="file-input-folder">
+                    <BsFillFileArrowUpFill/>
+                </label>
+                <input id="file-input-folder" type="file" />
             </div>
         </footer>
     );

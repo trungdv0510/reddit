@@ -90,6 +90,7 @@ const ChatRoom = () => {
       sender: user?._id,
       text: newMsg,
       conversationId: id,
+      isFile: true,
     };
     if (newMsg.length === 0) {
       console.log("Empty msg");
@@ -151,7 +152,6 @@ const ChatRoom = () => {
           Send
         </button>
       </div>
-      {/*trungdv: remove footer in chatbox*/}
       <UploadImageOrFile />
     </section>
   );
