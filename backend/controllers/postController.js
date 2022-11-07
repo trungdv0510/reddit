@@ -1,6 +1,5 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
-const { cloudinary } = require("../utils/cloudinary");
 const minioUtils = require("../utils/minioUtils");
 const {createFileName,convertToBuffer} = require("../services/fileService");
 const postController = {
@@ -11,13 +10,13 @@ const postController = {
       if (req.body.imageUrl) {
         let fileName = createFileName(req.body.imageUrl);
         let fileBuffer = convertToBuffer(req.body.imageUrl);
-        let url = await minioUtils.uploadFile(fileBuffer, process.env.MINIO_BUCKET_POST, fileName);
+        await minioUtils.uploadFile(fileBuffer, process.env.MINIO_BUCKET_POST, fileName);
         // const result = await cloudinary.uploader.upload(req.body.imageUrl, {
         //   upload_preset: "post_image",
         // });
         const makePost = {
           ...req.body,
-          imageUrl: url,
+          imageUrl: fileName,
           username: users.username,
           avaUrl: users.profilePicture,
           theme: users.theme,
@@ -61,8 +60,8 @@ const postController = {
     try {
       const post = await Post.findById(req.params.id);
       await Post.findByIdAndDelete(req.params.id);
-      if (post.cloudinaryId) {
-        await cloudinary.uploader.destroy(post.cloudinaryId);
+      if (post.imageUrl) {
+        await minioUtils.deleteFile(post.imageUrl);
       }
       res.status(200).json("Delete post succesfully");
     } catch (err) {
@@ -73,7 +72,13 @@ const postController = {
   //GET ALL POST FROM A USER
   getPostsFromOne: async (req, res) => {
     try {
-      const post = await Post.find({ userId: req.params.id });
+      const post = await Post.find({ userId: req.params.id }).lean();
+      for (let i=0;i<post.length; i++){
+        let imageName = post[i].imageUrl;
+        if (imageName){
+          post[i].imageUrl = await minioUtils.getFileUrl(process.env.MINIO_BUCKET_POST,imageName);
+        }
+      }
       res.status(200).json(post);
     } catch (err) {
       res.status(500).json(err);
@@ -84,13 +89,20 @@ const postController = {
   getFriendsPost: async (req, res) => {
     try {
       const currentUser = await User.findById(req.body.userId);
-      const userPost = await Post.find({ userId: req.body.userId });
+      const userPost = await Post.find({ userId: req.body.userId }).lean();
       const friendPost = await Promise.all(
         currentUser.followings.map((friendId) => {
-          return Post.find({ userId: friendId });
+          return Post.find({ userId: friendId }).lean();
         })
       );
-      res.status(200).json(userPost.concat(...friendPost));
+      const responseData = userPost.concat(...friendPost);
+      for(let i=0;i<responseData.length;i++){
+        let imageName = responseData[i].imageUrl;
+        if (imageName){
+          responseData[i].imageUrl = await minioUtils.getFileUrl(process.env.MINIO_BUCKET_POST,imageName);
+        }
+      }
+      res.status(200).json(responseData);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -99,7 +111,22 @@ const postController = {
   //GET ALL POSTS
   getAllPosts: async (req, res) => {
     try {
-      res.status(200).json(res.paginatedResults);
+      const postPaginate = res.paginatedResults.results;
+      const postResult = {};
+      let results = [];
+      for(let i =0;i<postPaginate.length;i++){
+          let data = postPaginate[i].toObject();
+          let urlImage = data.imageUrl;
+          if (urlImage){
+            data.imageUrl = await minioUtils.getFileUrl(process.env.MINIO_BUCKET_POST,urlImage);
+          }
+        let postItem = {
+          ...data,
+        }
+        results.push(postItem);
+      }
+      postResult.results = results;
+      res.status(200).json(postResult);
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -108,7 +135,10 @@ const postController = {
   //GET A POST
   getAPost: async(req,res) => {
     try{
-      const post = await Post.findById(req.params.id);
+      const post = await Post.findById(req.params.id).lean();
+      if (post.imageUrl){
+          post.imageUrl = await minioUtils.getFileUrl(process.env.MINIO_BUCKET_POST,post.imageUrl);
+      }
       res.status(200).json(post);
     }catch(err){
       return  res.status(500).json(err);

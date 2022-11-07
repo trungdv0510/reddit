@@ -38,27 +38,27 @@ const SideBar = () => {
                 />
               </div>
               <div className="text-4xl font-bold">u/{user?.username}</div>
-              <div className="sidebar-styleava">
-                <FaTrophy size={"24px"} className="sidebar-shirt" />
-                <span
-                  className="sidebar-styleava-title"
-                  onClick={goToLeaderboard}
-                >
-                  Leader Board
-                </span>
-              </div>
+              {/*<div className="sidebar-styleava">*/}
+              {/*  <FaTrophy size={"24px"} className="sidebar-shirt" />*/}
+              {/*  <span*/}
+              {/*    className="sidebar-styleava-title"*/}
+              {/*    onClick={goToLeaderboard}*/}
+              {/*  >*/}
+              {/*    Leader Board*/}
+              {/*  </span>*/}
+              {/*</div>*/}
               <div className="sidebar-info">
-                <div className="karmas-container">
-                  <RiCopperCoinLine
-                    size={"24px"}
-                    color="rgb(2, 88, 158)"
-                    className="karmas-logo"
-                  />
-                  <span className="karmas-title">
-                    {user?.karmas}
-                    <div className="karmas-header">Karma </div>
-                  </span>
-                </div>
+                {/*<div className="karmas-container">*/}
+                {/*  <RiCopperCoinLine*/}
+                {/*    size={"24px"}*/}
+                {/*    color="rgb(2, 88, 158)"*/}
+                {/*    className="karmas-logo"*/}
+                {/*  />*/}
+                {/*  <span className="karmas-title">*/}
+                {/*    {user?.karmas}*/}
+                {/*    <div className="karmas-header">Karma </div>*/}
+                {/*  </span>*/}
+                {/*</div>*/}
                 <div className="age-container">
                   <RiCake3Line
                     size={"24px"}

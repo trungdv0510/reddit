@@ -7,7 +7,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "golive": "lt --port 8088"
   },
   "author": "",
   "license": "ISC",

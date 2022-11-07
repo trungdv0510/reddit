@@ -1,18 +1,18 @@
-const {minioClient} = require('./minio.js');
+const {minioConfig} = require('./MinioConfig');
 const createBucket =  async (bucketName) => {
     console.log(`Creating Bucket: ${bucketName} and ${bucketName}`);
-    const bucketsList = await minioClient.listBuckets();
-    minioClient.bucketExists(bucketName, function(err, exists) {
-         if (!exists) {
-             minioClient.makeBucket(bucketName, 'ap-southeast-1', (err) => {
-                 if (err) {
-                     console.log('minio error '+err);
-                 }
-             });
-         }
+    const bucketsList = await minioConfig.listBuckets();
+    minioConfig.bucketExists(bucketName, function(err, exists) {
+        if (!exists) {
+            minioConfig.makeBucket(bucketName, 'ap-southeast-1', (err) => {
+                if (err) {
+                    console.log('minio error '+err);
+                }
+            });
+        }
         if (err) {
             if (err.code == 'NoSuchBucket') {
-                minioClient.makeBucket(bucketName, 'ap-southeast-1', function(err2) {
+                minioConfig.makeBucket(bucketName, 'ap-southeast-1', function(err2) {
                     if (err2) {
                         console.log("error on creating bucket", err2);
                     }
@@ -33,18 +33,18 @@ const minioUtils = {
             'Content-Type': 'application/octet-stream'
         }
         // Using fPutObject API upload your file to the bucket photos.
-        minioClient.fPutObject(bucketName, fileName, file, metaData, function (err, etag) {
+        minioConfig.fPutObject(bucketName, fileName, file, metaData, function (err, etag) {
             if (err) return console.log(err)
             console.log('File uploaded successfully.')
         });
-        const url = await minioClient.presignedGetObject(bucketName, fileName);
+        const url = await minioConfig.presignedGetObject(bucketName, fileName);
         console.log("Get url successfully: ", url);
         return url;
     },
     //upload file
-     uploadFile: async (file,bucketName,fileName) => {
+    uploadFile: async (file,bucketName,fileName) => {
         await createBucket(bucketName);
-        const submitFileDataResult = await minioClient
+        const submitFileDataResult = await minioConfig
             .putObject(bucketName, fileName, file)
             .catch((e) => {
                 console.log("Error while creating object from file data: ", e);
@@ -53,23 +53,23 @@ const minioUtils = {
 
         console.log("File data submitted successfully: ", submitFileDataResult);
         // thực hiện lấy url sau khi upload file
-        const url = await minioClient.presignedGetObject(bucketName, fileName);
+        const url = await minioConfig.presignedGetObject(bucketName, fileName);
         console.log("Get url successfully: ", url);
         return url;
-     },
-     getFileUrl: async (bucketName,fileName)=>{
-         // thực hiện lấy url sau khi upload file
-         console.log(fileName);
-         let url = await minioClient.presignedGetObject(bucketName, fileName, 60 * 60 * 24);
-         return url;
-     },
-     deleteFile: async (bucketName,fileName)=>{
+    },
+    getFileUrl: async (bucketName,fileName)=>{
+        // thực hiện lấy url sau khi upload file
+        let url = await minioConfig.presignedGetObject(bucketName, fileName, 60 * 60 * 24);
+        console.log(url);
+        return url;
+    },
+    deleteFile: async (bucketName,fileName)=>{
         try{
-            await minioClient.removeObject(bucketName,fileName);
+            await minioConfig.removeObject(bucketName,fileName);
         }catch (err){
             console.log(err);
         }
 
-     }
+    }
 }
 module.exports = minioUtils;

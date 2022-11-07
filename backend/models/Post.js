@@ -15,9 +15,6 @@ const postSchema = new mongoose.Schema(
     imageUrl:{
       type:String,
     },
-    cloudinaryId:{
-      type:String
-    },
     theme: {
       type: String,
     },

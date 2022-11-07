@@ -6,7 +6,7 @@
 .feed-container-opened {
   height: 100vh;
   background-color: #0c0c0c;
-  width: 30%;
+  width: 40%;
   align-self: flex-end;
   transition: width 300ms;
   overflow-x: hidden;
@@ -15,13 +15,14 @@
   padding-right: 0.75rem;
   position: relative;
   font-size: 1.5rem;
-  height: 80px;
+  height: 111px;
   font-family: "Noto Sans", sans-serif;
-  font-size: 700;
+  font-size:700;
   background-color: #222222;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  padding-top: 21px;
 }
 .feed-logo-img {
   margin-right: auto;

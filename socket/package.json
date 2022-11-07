@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "golive": "lt --port 8089"
   },
   "author": "",
   "license": "ISC",
@@ -12,7 +13,9 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "filereader": "^0.10.3",
     "http": "^0.0.1-security",
+    "minio": "^7.0.32",
     "socket.io": "^4.4.1"
   }
 }

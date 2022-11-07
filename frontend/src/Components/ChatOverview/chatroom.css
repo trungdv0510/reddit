@@ -64,7 +64,7 @@
   position: fixed;
 }
 .message-header {
-  height: 80px;
+  height: 107px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,8 +77,8 @@
   z-index: 10;
   cursor: pointer;
   position: absolute;
-  top: 20px;
-  left:20px;
+  top: 33px;
+  left: 20px;
 }
 .msgs-container {
   padding: 1rem;
@@ -175,4 +175,7 @@
     #1b2775 100%
   );
   color: white;
+}
+.imageSendData{
+  width: 100%;
 }

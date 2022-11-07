@@ -15,8 +15,13 @@ const messageRoute = require("./routes/message");
 const conversationRoute = require("./routes/conversation");
 dotenv.config();
 
-mongoose.connect(process.env.DB_URL, () => {
-  console.log("CONNECTED TO MONGO DB");
+mongoose.connect(process.env.DB_URL, (err) => {
+    if(err){
+        console.log(err);
+        throw err;
+    } else {
+        console.log("CONNECTED TO MONGO DB");
+    }
 });
 
 app.use(bodyParser.json({ limit: "50mb" }));
