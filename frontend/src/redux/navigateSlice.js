@@ -22,6 +22,9 @@ export const navigateSlice = createSlice({
       open: false,
       room: null,
     },
+    showAddMember:{
+      open:false
+    }
   },
   reducers: {
     sideBarToggle: (state, action) => {
@@ -42,6 +45,9 @@ export const navigateSlice = createSlice({
     setRoom: (state,action) => {
       state.message.room = action.payload;
     },
+    setShowAction:(state, action)=>{
+      state.showAddMember.open = action.payload;
+    }
   },
 });
 
@@ -52,5 +58,6 @@ export const {
   fullPostToggle,
   messageToggle,
   setRoom,
+  setShowAction
 } = navigateSlice.actions;
 export default navigateSlice.reducer;
