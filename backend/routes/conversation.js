@@ -23,4 +23,20 @@ router.get(
   conversationController.getAvailableConversation
 );
 
+router.post(
+    "/add-user-conversation",
+    middlewareController.verifyToken,
+    conversationController.addNewUserToConversation
+)
+router.post(
+    "/remove-user-conversation",
+    middlewareController.verifyToken,
+    conversationController.removeUserFromConversation
+)
+router.get(
+    "/get-user-conversation/:id",
+    middlewareController.verifyToken,
+    conversationController.getAllUserInConversation
+)
+
 module.exports = router;
