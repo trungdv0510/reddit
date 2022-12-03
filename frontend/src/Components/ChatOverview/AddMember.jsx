@@ -1,11 +1,11 @@
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {baseURL} from "../../utils/listContainer";
 import {useSelector,useDispatch} from "react-redux";
 import InputField from "../InputFields/Input";
 import "./AddMember.css";
 import {io} from "socket.io-client";
-import {setShowAction} from "../../redux/navigateSlice";
+import ReactJsAlert from "reactjs-alert";
 const AddMember = () => {
     const socket = useRef();
     const user = useSelector((state) => state.user.user?.currentUser);
@@ -13,6 +13,9 @@ const AddMember = () => {
     const setOpen =  useSelector((state) => state.nav.showAddMember.open);
     const [search, setSearch] = useState("");
     const [result, setResulsts] = useState([]);
+    const [status, setStatus] = useState(false);
+    const [type, setType] = useState("");
+    const [title, setTitle] = useState("");
     const [openSearch, setOpenSearch] = useState(false);
     const dispatch = useDispatch();
     const addUserToConversation = async (id, conversationId) => {
@@ -25,8 +28,13 @@ const AddMember = () => {
         }).then((res) => {
             if (res.status === 200) {
                 socket.current.emit("addUser", id);
-                dispatch(setShowAction(!setOpen));
+                //dispatch(setShowAction(!setOpen));
+                setType("success");
+            }else{
+                setType("false");
             }
+            setTitle(res.data);
+            setStatus(true);
         });
     };
     const searchUsername = async () => {
@@ -43,7 +51,7 @@ const AddMember = () => {
             });
     };
     useEffect(()=>{
-        socket.current = io("http://192.168.1.112:8089", {
+        socket.current = io("http://192.168.0.103:8089", {
             transports: ["websocket"],
         });
     });
@@ -58,6 +66,12 @@ const AddMember = () => {
     return (
         <header className="feed-logo">
             <div className="search-container">
+                <ReactJsAlert
+                    status={status} // true or false
+                    type={type} // success, warning, error, info
+                    title={title}
+                    Close={() => setStatus(false)}
+                    />
                 <InputField
                     classStyle="search-user"
                     placeholder="🔎 Search for user to add"
