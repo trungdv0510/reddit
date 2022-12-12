@@ -6,8 +6,10 @@ import InputField from "../InputFields/Input";
 import "./AddMember.css";
 import {io} from "socket.io-client";
 import ReactJsAlert from "reactjs-alert";
+import {setShowAction} from "../../redux/navigateSlice";
 const AddMember = () => {
     const socket = useRef();
+    const titleState =  useSelector((state) => state.nav.title.name);
     const user = useSelector((state) => state.user.user?.currentUser);
     const room = useSelector((state) => state.nav.message.room);
     const setOpen =  useSelector((state) => state.nav.showAddMember.open);
@@ -18,6 +20,7 @@ const AddMember = () => {
     const [title, setTitle] = useState("");
     const [openSearch, setOpenSearch] = useState(false);
     const dispatch = useDispatch();
+    const placeHolder = "🔎 Search for " + titleState;
     const addUserToConversation = async (id, conversationId) => {
         const newUser = {
             conversationId: conversationId,
@@ -63,6 +66,9 @@ const AddMember = () => {
             searchUsername();
         }
     }, [search]);
+    const closePopUp = () => {
+        dispatch(setShowAction(!setOpen));
+    }
     return (
         <header className="feed-logo">
             <div className="search-container">
@@ -74,7 +80,7 @@ const AddMember = () => {
                     />
                 <InputField
                     classStyle="search-user"
-                    placeholder="🔎 Search for user to add"
+                    placeholder= {placeHolder}
                     data={search}
                     setData={setSearch}
                 />
@@ -98,6 +104,9 @@ const AddMember = () => {
                         })}
                     </div>
                 )}
+            </div>
+            <div>
+                <button className={"buttonClose"} onClick={closePopUp}>Close</button>
             </div>
         </header>
     );
