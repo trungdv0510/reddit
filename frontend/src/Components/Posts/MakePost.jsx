@@ -30,7 +30,7 @@ const MakePost = () => {
     const [previewSource, setPreviewSource] = useState("");
     const [previewSourceVideo, setPreviewSourceVideo] = useState("");
     const handlePost = () => {
-        if (!previewSource) {
+        if (!previewSource && !previewSourceVideo) {
             const newPost = {
                 userId: user?._id,
                 title: formik.values.title,

@@ -246,7 +246,7 @@ const ChatRoom = () => {
                     <div className="go-back-convo" onClick={handleGoBack}>
                         <IoIosArrowRoundBack size={"42px"}/>
                     </div>
-                    {roomNameGroup}
+                    {roomNameGroup? roomNameGroup : room.nameGroup}
                     <div className="add-member" onClick={handlePopup}>
                         <BsThreeDotsVertical size={"20px"}/>
                     </div>

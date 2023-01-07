@@ -31,7 +31,11 @@ const conversationController = {
             const conversation = await Conversation.findOne({
                 members: {$all: [req.params.first, req.params.second]},
             });
-            res.status(200).json(conversation);
+            if (conversation.members.length > 2 ){
+                res.status(200).json(null);
+            }else {
+                res.status(200).json(conversation);
+            }
         } catch (err) {
             res.status(500).json(err);
         }

@@ -251,6 +251,9 @@ input[type="file"] {
   text-align: center;
   cursor: pointer;
 }
+.checkData{
+  width: 100%;
+}
 .posts-tags-NSFW {
   background-color: rgb(209, 66, 47);
 }
