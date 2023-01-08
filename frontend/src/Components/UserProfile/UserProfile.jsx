@@ -11,12 +11,14 @@ import { getUserPost } from "../../redux/apiRequests";
 import { useParams } from "react-router-dom";
 import FullPost from "../Posts/FullPost/FullPost";
 import React, { Component }  from 'react';
+import {setfollower} from "../../redux/navigateSlice";
 const UserProfile = (props) => {
   const { isEdit, setEdit } = props;
   const { id } = useParams();
   const post = useSelector((state) => state.post.userPost?.posts);
   const fullPost = useSelector((state) => state.nav.fullPost);
   const allComments = useSelector((state) => state.comment.addComments);
+  const follower = useSelector((state) => state.nav.follower.count);
   const isOpenPost = useSelector((state) => state.nav.makepost.open);
   const isDelete = useSelector((state) => state.nav.deleteState);
   const interactPost = useSelector((state) => state.post.interactPost);
@@ -28,7 +30,6 @@ const UserProfile = (props) => {
   const pending = useSelector((state) => state.user.user.pending);
   const error = useSelector((state) => state.user.user.error);
   const dispatch = useDispatch();
-
   useEffect(() => {
     getUserPost(dispatch, user?.accessToken, id);
   }, [dispatch, user, id, deletePost, createPost, interactPost, allComments]);
@@ -48,7 +49,7 @@ const UserProfile = (props) => {
               className="follower"
               style={{ borderRight: `1px solid ${currentUser?.theme}` }}
             >
-              <p className="follower-num">{currentUser?.followers.length}</p>
+              <p className="follower-num">{follower}</p>
               <p className="follower-title">Followers</p>
             </div>
             <div className="following">

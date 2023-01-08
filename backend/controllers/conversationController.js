@@ -28,14 +28,16 @@ const conversationController = {
     //GET AVAILABLE CONVERSATION
     getAvailableConversation: async (req, res) => {
         try {
-            const conversation = await Conversation.findOne({
+            const conversations = await Conversation.find({
                 members: {$all: [req.params.first, req.params.second]},
             });
-            if (conversation.members.length > 2 ){
-                res.status(200).json(null);
-            }else {
-                res.status(200).json(conversation);
+            let conversation = null;
+            for (const conversationElement of conversations) {
+                if (conversationElement.members.length === 2 ){
+                    conversation = conversationElement;
+                }
             }
+            res.status(200).json(conversation);
         } catch (err) {
             res.status(500).json(err);
         }

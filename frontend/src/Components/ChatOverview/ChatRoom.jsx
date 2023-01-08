@@ -197,8 +197,6 @@ const ChatRoom = () => {
                 const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/message`, message, {
                     headers: {token: `Bearer ${user.accessToken}`},
                 });
-                console.log("Gía trị respone là ");
-                console.log(res.data);
                 res.data.text = previewSource;
                 setMessage([...messages, res.data]);
                 setNewMsg("");
@@ -246,7 +244,7 @@ const ChatRoom = () => {
                     <div className="go-back-convo" onClick={handleGoBack}>
                         <IoIosArrowRoundBack size={"42px"}/>
                     </div>
-                    {roomNameGroup? roomNameGroup : room.nameGroup}
+                    {roomNameGroup}
                     <div className="add-member" onClick={handlePopup}>
                         <BsThreeDotsVertical size={"20px"}/>
                     </div>

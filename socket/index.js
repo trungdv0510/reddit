@@ -54,6 +54,24 @@ io.on("connection", (socket) => {
             });
         });
     });
+
+
+
+    //send, get message with url
+    socket.on("sendMessageUrl", ({senderId, receiverId, text, type}) => {
+        receiverId.forEach((value,index)=>{
+            const user = getUser(value);
+            console.log(user);
+            io.to(user?.socketId).emit("getMessageUrl", {
+                senderId,
+                text,
+                type
+            });
+        });
+    });
+
+
+
     // Handle image
     socket.on("sendPhoto", async ({senderId, receiverId, data,fileName}) => {
         console.log("users send image : " + users);

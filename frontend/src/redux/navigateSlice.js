@@ -6,6 +6,9 @@ export const navigateSlice = createSlice({
     sidebar: {
       open: false,
     },
+    follower: {
+      count: 0,
+    },
     makepost: {
       open: false,
     },
@@ -43,6 +46,9 @@ export const navigateSlice = createSlice({
   reducers: {
     sideBarToggle: (state, action) => {
       state.sidebar.open = action.payload;
+    },
+    setFollower: (state, action) => {
+      state.follower.count = action.payload;
     },
     makePostToggle: (state, action) => {
       state.makepost.open = action.payload;
@@ -92,6 +98,7 @@ export const {
   setPopup,
   setTitle,
   setPopupRename,
-  setRemoveMember
+  setRemoveMember,
+  setFollower
 } = navigateSlice.actions;
 export default navigateSlice.reducer;

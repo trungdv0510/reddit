@@ -7,23 +7,40 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { AiOutlineMessage } from "react-icons/ai";
 import { followUser, getUser } from "../../redux/apiRequests";
 import "./header.css";
-import { setRoom } from "../../redux/navigateSlice";
+import {setFollower, setFullName, setRoom} from "../../redux/navigateSlice";
+import {getUserSuccess} from "../../redux/userSlice";
 
 const Header = (props) => {
   const user = useSelector((state) => state.user.user?.currentUser);
   const currentUser = useSelector((state) => state.user.otherUser?.otherUser);
+  const follower = useSelector((state) => state.nav.follower.count);
   const { id } = useParams();
-  const [isFollowed, setFollowed] = useState(user?.followings.includes(id));
+  const [isFollowed, setFollowed] = useState(currentUser?.followers.includes(user?._id));
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { setEdit, isEdit } = props;
+  const [followNumber, setFollowNumber] = useState(currentUser?.followers.length);
+  //console.log('followNumber',followNumber);
+  console.log('follower',follower);
   const handleEdit = () => {
     setEdit(!isEdit);
   };
   useEffect(() => {
+    dispatch(setFollower(followNumber));
     getUser(dispatch, id, user?.accessToken);
   }, []);
   const handleFollow = () => {
+    let follow = followNumber;
+    if (isFollowed) {
+      setFollowNumber(followNumber - 1);
+      follow = followNumber - 1;
+    } else {
+      setFollowNumber(followNumber + 1);
+      follow = followNumber + 1;
+    }
+    console.log('followNumber',follow);
+    dispatch(getUserSuccess(currentUser));
+    dispatch(setFollower(follow));
     const userId = {
       userId: user?._id,
     };
@@ -44,6 +61,7 @@ const Header = (props) => {
       });
       if (res.data) {
         dispatch(setRoom(res.data));
+        dispatch(setFullName(res.data.nameGroup));
         navigate(`/chat/${res.data._id}`);
       } else {
         const newConvo = {
@@ -56,6 +74,7 @@ const Header = (props) => {
           })
           .then((res) => {
             dispatch(setRoom(res.data));
+            dispatch(setFullName(res.data.nameGroup));
             navigate(`/chat/${res.data._id}`);
           });
       }

@@ -23,6 +23,27 @@ const messageController = {
       res.status(500).json(err);
     }
   },
+  createMessageFileLoad: async (req, res) => {
+    const newMsg = new Message(req.body);
+    try {
+      const savedMsg = await newMsg.save();
+      await Conversation.findOneAndUpdate(
+          {
+            _id: req.body.conversationId,
+          },
+          {
+            $inc: { messageCount: 1 },
+          }
+      );
+      if(savedMsg.isFile){
+        let imageUrl = await minioUtils.uploadFile(req.file.buffer,process.env.MINIO_BUCKET_MESSAGE, savedMsg.text);
+        savedMsg.text = imageUrl;
+      }
+      res.status(200).json(savedMsg);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
   getMessage: async (req, res) => {
     try {
       const messages = await Message.find({
