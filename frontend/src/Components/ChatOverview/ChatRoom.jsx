@@ -106,6 +106,15 @@ const ChatRoom = () => {
                 createdAt: Date.now(),
             });
         });
+        socket.current.on("sendMessageUrl", (data) => {
+            setReceivedMsg({
+                sender: data.senderId,
+                text: data.text,
+                type: data.type,
+                isFile: true,
+                createdAt: Date.now(),
+            });
+        });
     }, [socket]);
 
     useEffect(() => {
