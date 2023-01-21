@@ -15,6 +15,7 @@ const messageController = {
         }
       );
       if(savedMsg.isFile){
+        savedMsg.fileName = savedMsg.text;
         let imageUrl = await minioUtils.getFileUrl( process.env.MINIO_BUCKET_MESSAGE, savedMsg.text);
         savedMsg.text = imageUrl;
       }
@@ -37,6 +38,7 @@ const messageController = {
       );
       if(savedMsg.isFile){
         let imageUrl = await minioUtils.uploadFile(req.file.buffer,process.env.MINIO_BUCKET_MESSAGE, savedMsg.text);
+        savedMsg.fileName = savedMsg.text;
         savedMsg.text = imageUrl;
       }
       res.status(200).json(savedMsg);
@@ -53,6 +55,7 @@ const messageController = {
       for (let i=0;i<messages.length; i++){
         let file = messages[i].isFile;
         if (file){
+          messages[i].fileName = messages[i].text;
           let urlImage = await minioUtils.getFileUrl(process.env.MINIO_BUCKET_MESSAGE,messages[i].text);
           messages[i].text = urlImage;
         }

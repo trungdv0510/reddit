@@ -283,3 +283,10 @@
     margin-left: 10px;
     margin-bottom: 25px;
 }
+.file{
+    width: 100%;height: 100%;border: none;
+}
+a.imageSendData {
+    color: white;
+    text-decoration: none;
+}

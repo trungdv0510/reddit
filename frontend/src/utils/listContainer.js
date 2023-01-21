@@ -42,3 +42,9 @@ export function isFileImage(file) {
    console.log(acceptedImageTypes.includes(ext));
   return acceptedImageTypes.includes(ext);
  }
+export function isExtVideo(fileBase64){
+  let ext = fileBase64.split(',')[0].split(':')[1].split(';')[0].split("/")[1];
+  const acceptedImageTypes = ['mp4'];
+  console.log(acceptedImageTypes.includes(ext));
+  return acceptedImageTypes.includes(ext);
+}

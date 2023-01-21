@@ -58,13 +58,14 @@ io.on("connection", (socket) => {
 
 
     //send, get message with url
-    socket.on("sendMessageUrl", ({senderId, receiverId, text, type}) => {
+    socket.on("sendMessageUrl", ({senderId, receiverId, text, type,fileName}) => {
         receiverId.forEach((value,index)=>{
             const user = getUser(value);
             console.log(user);
             io.to(user?.socketId).emit("getMessageUrl", {
                 senderId,
                 text,
+                fileName,
                 type
             });
         });
@@ -74,12 +75,20 @@ io.on("connection", (socket) => {
 
     // Handle image
     socket.on("sendPhoto", async ({senderId, receiverId, data,fileName}) => {
-        console.log("users send image : " + users);
+        console.log("users send image : ", users);
         let urlFileName = "Error! can't send file";
         let type = undefined;
         try{
             urlFileName =  await minioUtils.uploadFile(data, process.env.MINIO_BUCKET_MESSAGE, fileName);
-            type = isExtImage(data)? "img":"video";
+            let ext = fileName.split('.')[1];
+            const acceptedImageTypes = ['gif', 'jpeg', 'png','jpg'];
+            if (acceptedImageTypes.includes(ext)){
+                type = "img";
+            }else if (["mp4"].includes(ext)) {
+                type = "video";
+            }else {
+                type = "file";
+            }
         }catch (Error){
             console.log(Error);
         }
@@ -88,6 +97,7 @@ io.on("connection", (socket) => {
             io.to(user?.socketId).emit("receiveImage", {
                 senderId,
                 urlFileName,
+                fileName,
                 type
             });
         });

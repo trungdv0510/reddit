@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {IoIosArrowRoundBack} from "react-icons/io";
-import {BsFillFileArrowUpFill, BsThreeDotsVertical,BsEmojiSmile} from "react-icons/bs";
+import {BsFillFileArrowUpFill, BsThreeDotsVertical, BsEmojiSmile} from "react-icons/bs";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import {io} from "socket.io-client";
@@ -17,7 +17,7 @@ import "../PopUp/popUp.css";
 import ChangeNameGroup from "./RoomFunction/ChangeNameGroup";
 import RemoveMember from "./RoomFunction/RemoveMember";
 import Picker from 'emoji-picker-react';
-import {isFileImage,isExtImage} from '../../utils/listContainer';
+import {isFileImage, isExtImage, isExtVideo} from '../../utils/listContainer';
 
 const ChatRoom = () => {
     const user = useSelector((state) => state.user.user?.currentUser);
@@ -25,13 +25,14 @@ const ChatRoom = () => {
     const roomNameGroup = useSelector((state) => state.nav.roomName.name);
     const addMember = useSelector((state) => state.nav.showAddMember.open);
     const removeMember = useSelector((state) => state.nav.removeMember.open);
-    const popup =  useSelector((state) => state.nav.popup.open);
-    const popupChangeName =  useSelector((state) => state.nav.roomName.open);
+    const popup = useSelector((state) => state.nav.popup.open);
+    const popupChangeName = useSelector((state) => state.nav.roomName.open);
     const [previewSource, setPreviewSource] = useState("");
     const [previewFileData, setPreviewFile] = useState(null);
     const [messages, setMessage] = useState([]);
     const [newMsg, setNewMsg] = useState("");
     const [receivedMsg, setReceivedMsg] = useState("");
+    const [fileNameState, setFileNameState] = useState("");
     const [emoji, setEmoji] = useState(false);
     const socket = useRef();
     const [partner, setPartner] = useState([]);
@@ -39,7 +40,7 @@ const ChatRoom = () => {
     const scrollRef = useRef();
     const {id} = useParams();
     const dispatch = useDispatch();
-    const removeAllPopUp = ()=>{
+    const removeAllPopUp = () => {
         dispatch(setShowAction(false));
         dispatch(setRemoveMember(false));
         dispatch(setPopupRename(false));
@@ -83,7 +84,7 @@ const ChatRoom = () => {
         socket.current.disconnect();
     };
     const handlePopup = () => {
-        dispatch(setPopup(!popup)) ;
+        dispatch(setPopup(!popup));
     };
 
     useEffect(() => {
@@ -101,6 +102,7 @@ const ChatRoom = () => {
             setReceivedMsg({
                 sender: data.senderId,
                 text: data.urlFileName,
+                fileName: data.fileName,
                 type: data.type,
                 isFile: true,
                 createdAt: Date.now(),
@@ -111,6 +113,7 @@ const ChatRoom = () => {
                 sender: data.senderId,
                 text: data.text,
                 type: data.type,
+                fileName: data.fileName,
                 isFile: true,
                 createdAt: Date.now(),
             });
@@ -132,12 +135,12 @@ const ChatRoom = () => {
             try {
                 let partnerId = room?.members.filter((m) => m !== user?._id);
                 partnerId.push(room?.membersRemove);
-                axiosInstance.post(`${process.env.REACT_APP_BACKEND_URL}/users/get-all-user-with-id`,{
+                axiosInstance.post(`${process.env.REACT_APP_BACKEND_URL}/users/get-all-user-with-id`, {
                     users: partnerId,
-                }).then((res)=>{
+                }).then((res) => {
                     setPartner(res.data);
                 });
-                axiosInstance.get(`${process.env.REACT_APP_BACKEND_URL}/message/${room._id}`).then((msgRes)=>{
+                axiosInstance.get(`${process.env.REACT_APP_BACKEND_URL}/message/${room._id}`).then((msgRes) => {
                     setMessage(msgRes.data);
                 }).catch((err) => {
                     console.log(err);
@@ -148,7 +151,41 @@ const ChatRoom = () => {
         };
         getMessage();
     }, [room]);
-
+    const submitMessageWithFile = async (dataFile, fileName) => {
+        if (dataFile && fileName) {
+            const receiverId = [];
+            partner.forEach((value, index) => {
+                receiverId.push(value?._id);
+            });
+            let file = "file";
+            const message = {
+                sender: user?._id,
+                text: fileName,
+                conversationId: id,
+                isFile: true,
+                type: file
+            };
+            console.log("mesageSend", message);
+            socket.current.emit("sendPhoto", {
+                senderId: user._id,
+                receiverId,
+                data: dataFile,
+                fileName: fileName
+            });
+            try {
+                const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/message`, message, {
+                    headers: {token: `Bearer ${user.accessToken}`},
+                });
+                //res.data.text = fileName;
+                setMessage([...messages, res.data]);
+                setNewMsg("");
+                setPreviewSource("");
+                setPreviewFile(null);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    }
     const submitMessage = async () => {
         if (newMsg.length === 0 && previewSource.length === 0) {
             console.log("Empty msg");
@@ -160,8 +197,8 @@ const ChatRoom = () => {
                 isFile: false
             };
             const receiverId = [];
-             partner.forEach((value,index)=>{
-                 receiverId.push(value?._id);
+            partner.forEach((value, index) => {
+                receiverId.push(value?._id);
             });
             socket.current.emit("sendMessage", {
                 senderId: user._id,
@@ -180,13 +217,16 @@ const ChatRoom = () => {
             }
         } else {
             const receiverId = [];
-            partner.forEach((value,index)=>{
-                    receiverId.push(value?._id);
+            partner.forEach((value, index) => {
+                receiverId.push(value?._id);
             });
             let ext = previewSource.split(',')[0].split(':')[1].split(';')[0].split("/")[1];
-            let fileName = new Date().getTime().toString() + "." + ext;
+            let fileName = fileNameState;
+            if (!fileNameState) {
+                fileName = new Date().getTime().toString() + "." + ext;
+            }
             let file = "img";
-            if(!isExtImage(previewSource)){
+            if (!isExtImage(previewSource)) {
                 file = "video";
             }
             const message = {
@@ -194,8 +234,9 @@ const ChatRoom = () => {
                 text: fileName,
                 conversationId: id,
                 isFile: true,
-                type:file
+                type: file
             };
+            console.log("mesageSend", message);
             socket.current.emit("sendPhoto", {
                 senderId: user._id,
                 receiverId,
@@ -217,8 +258,7 @@ const ChatRoom = () => {
         }
     };
     const onEmojiClick = (event, emojiObject) => {
-        let newMessage = newMsg+event.emoji;
-        console.log(newMessage);
+        let newMessage = newMsg + event.emoji;
         setNewMsg(newMessage);
     };
     useEffect(() => {
@@ -230,10 +270,18 @@ const ChatRoom = () => {
     };
     const previewFile = (file) => {
         const reader = new FileReader();
+        console.log("value in file ", file);
+        setFileNameState(file.name);
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setPreviewSource(reader.result);
-            setPreviewFile(file);
+            let ext = reader.result.split(',')[0].split(':')[1].split(';')[0].split("/")[1];
+            const acceptedImageTypes = ['gif', 'jpeg', 'png', 'jpg'];
+            if (acceptedImageTypes.includes(ext) || ["mp4"].includes(ext)) {
+                setPreviewSource(reader.result);
+                setPreviewFile(file);
+            } else {
+                submitMessageWithFile(reader.result,file.name);
+            }
         };
     };
     const removePreviewSrc = () => {
@@ -243,7 +291,7 @@ const ChatRoom = () => {
     const showEmoji = () => {
         setEmoji(!emoji);
     }
-    const showEmojiOff = ()=>{
+    const showEmojiOff = () => {
         setEmoji(false);
     }
     return (
@@ -263,7 +311,7 @@ const ChatRoom = () => {
                         <>
                             <p className="close close-icon" onClick={handlePopup}>x</p>
                             <Popup
-                                conversationId = {id}
+                                conversationId={id}
                                 socket={socket}
                             />
                         </>
@@ -271,10 +319,10 @@ const ChatRoom = () => {
                     {addMember && (<AddMember/>)}
                     {popupChangeName && (
                         <ChangeNameGroup
-                            conversationId = {id}
+                            conversationId={id}
                         />)}
                     {removeMember && (<RemoveMember
-                        conversationId = {id}
+                        conversationId={id}
                     />)}
                 </div>
             </div>
@@ -298,10 +346,12 @@ const ChatRoom = () => {
                         {" "}
                         X{" "}
                     </p>
-                    {isExtImage(previewSource)?(
-                        <img src={previewSource} alt="chosen"/>
-                    ):(
+                    {isExtVideo(previewSource) ? (
                         <video src={previewSource} controls className={"imageSendData"}></video>
+
+                    ) : (
+                        isExtImage(previewSource) &&
+                        (<img src={previewSource} alt="chosen"/>)
                     )}
 
                 </div>
@@ -318,40 +368,40 @@ const ChatRoom = () => {
                     />
                 </div>
 
-                {!isMobile && ( <div className="upload-web">
+                {!isMobile && (<div className="upload-web">
                         <div className="image-upload">
                             <BsEmojiSmile onClick={showEmoji}/>
                         </div>
-                    <div className="image-upload"  onClick={showEmojiOff}>
-                        <label htmlFor="file-input">
-                            <BiImageAdd/>
-                        </label>
-                        <input id="file-input"
-                               type="file"
-                               name="image"
-                               onChange={handleFileInputChange}/>
+                        <div className="image-upload" onClick={showEmojiOff}>
+                            <label htmlFor="file-input">
+                                <BiImageAdd/>
+                            </label>
+                            <input id="file-input"
+                                   type="file"
+                                   name="image"
+                                   onChange={handleFileInputChange}/>
+                        </div>
+                        {/*<div className="image-upload"  onClick={showEmojiOff}>*/}
+                        {/*    <label htmlFor="file-input-folder">*/}
+                        {/*        <BsFillFileArrowUpFill/>*/}
+                        {/*    </label>*/}
+                        {/*    <input id="file-input-folder"*/}
+                        {/*           type="file"*/}
+                        {/*           name="image"*/}
+                        {/*           onChange={handleFileInputChange}/>*/}
+                        {/*</div>*/}
                     </div>
-                    {/*<div className="image-upload"  onClick={showEmojiOff}>*/}
-                    {/*    <label htmlFor="file-input-folder">*/}
-                    {/*        <BsFillFileArrowUpFill/>*/}
-                    {/*    </label>*/}
-                    {/*    <input id="file-input-folder"*/}
-                    {/*           type="file"*/}
-                    {/*           name="image"*/}
-                    {/*           onChange={handleFileInputChange}/>*/}
-                    {/*</div>*/}
-                </div>
                 )}
                 {emoji && (
                     <div className={"emoji-show"}>
-                        <Picker onEmojiClick={onEmojiClick} disableAutoFocus={true} native />
+                        <Picker onEmojiClick={onEmojiClick} disableAutoFocus={true} native/>
                     </div>
                 )}
                 <button className="chat-submit" onClick={submitMessage}>
                     Send
                 </button>
             </div>
-            {isMobile && ( <footer className="upload">
+            {isMobile && (<footer className="upload">
                 <div className="image-upload">
                     <label htmlFor="file-input">
                         <BiImageAdd/>
