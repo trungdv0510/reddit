@@ -12,10 +12,10 @@
 .allUser {
     position: absolute;
     z-index: 2;
-    top: 3%;
-    left: 30%;
-    width: 40%;
-    height: 30%;
+    top: 0%;
+    left: 2%;
+    width: 96%;
+    height: 85%;
     background: white;
     color: black;
     overflow-y: scroll;
@@ -25,7 +25,19 @@
     margin-bottom: 2%;
     width: 100px;
 }
-
+.removeUser {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 5%;
+    width: 93%;
+    height: 25%;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column-reverse;
+    border-radius: 10px;
+}
 @media screen and (min-width: 1000px) {
     .background {
         background: black;
@@ -127,23 +139,18 @@ img.profilePic {
 }
 
 @media all and (max-width: 767px) {
-    .table-header {
-        display: none;
-    }
     li {
-        display: block;
+        display: flex;
     }
-
     .col {
-
         flex-basis: 100%;
-        margin-top: 30px;
     }
-
     .col {
         display: flex;
         padding: 10px 0;
-
+    }
+    .col-1 {
+        margin-top: 20px;
     }
 
 }

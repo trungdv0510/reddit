@@ -61,7 +61,6 @@ const RemoveMember = (props) => {
                     <ul className="responsive-table">
                         {dataUser?.map((user) => {
                             return (
-
                                 <li className="table-header">
                                     <div className="col col-2">
                                         <img src= {`${user.profilePicture}`}  alt="" className={"profilePic"}/>

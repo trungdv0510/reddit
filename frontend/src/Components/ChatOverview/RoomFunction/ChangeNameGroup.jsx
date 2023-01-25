@@ -49,7 +49,7 @@ const AddMember = (props) => {
                     Close={() => setStatus(false)}
                 />
                 <InputField
-                    classStyle="search-user"
+                    classStyle="search-add-or-rename"
                     placeholder= {titleState}
                     data={search}
                     setData={setSearch}

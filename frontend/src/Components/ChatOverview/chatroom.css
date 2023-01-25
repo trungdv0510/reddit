@@ -23,8 +23,8 @@
 }
 .emoji-show {
     position: absolute;
-    bottom: 19px;
-    right: 385px;
+    bottom: 77px;
+    right: 18px;
 }
 .contact-container {
     display: flex;
@@ -172,7 +172,7 @@
 }
 
 .chat-msg-input {
-    width: 80%;
+    width: 100%;
     height: 50px;
     font-size: 1rem;
     border-radius: 30px;
@@ -206,8 +206,8 @@
 .chat-submit {
     padding: 0;
     margin: 0;
-    width: 70px;
-    height: 40px;
+    width: 100px;
+    height: 50px;
     border: none;
     margin-left: 1rem;
     border-radius: 5px;
@@ -225,7 +225,19 @@
 .imageSendData {
     width: 100%;
 }
+@media screen and (min-width: 1700px) {
+    .emoji-show {
+        position: absolute;
+        bottom: 19px;
+        right: 385px;
+    }
+}
 @media screen and (min-width: 1000px) {
+    .emoji-show {
+        position: absolute;
+        bottom: 77px;
+        right: 293px;
+    }
     .chat-msg-input {
         width: 100%;
         height: 50px;

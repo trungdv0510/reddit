@@ -21,6 +21,36 @@ header {
     align-self: center;
     width: 171%;
 }
+.search-add-or-rename {
+    text-align: start;
+    margin-left: 16px;
+    font-size: 1rem;
+    align-self: center;
+    width: 100%;
+}
+.buttonClose {
+    margin-top: 0rem;
+    position: absolute;
+    right: 12px;
+    bottom: 17px;
+    width: 26%;
+}
+@media screen and (min-width: 1000px) {
+    .search-add-or-rename {
+        text-align: start;
+        margin-left: 100%;
+        font-size: 1rem;
+        align-self: center;
+        width: 171%;
+    }
+    .buttonClose{
+        margin-top: 0rem;
+        position: absolute;
+        right: 76px;
+        bottom: 21px;
+        width: 7%;
+    }
+}
 .follow{
     background-color: transparent;
     border: 3px solid white;
@@ -119,13 +149,6 @@ header {
     backdrop-filter: blur(11.4px);
     /*margin-left: 54%;*/
     -webkit-backdrop-filter: blur(11.4px);
-}
-.buttonClose{
-    margin-top: 0rem;
-    position: absolute;
-    right: 76px;
-    bottom: 21px;
-    width: 7%;
 }
 .titleClass{
     font-size: 20px;

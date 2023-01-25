@@ -81,7 +81,7 @@ const AddMember = () => {
                     Close={() => setStatus(false)}
                     />
                 <InputField
-                    classStyle="search-user"
+                    classStyle="search-add-or-rename"
                     placeholder= {placeHolder}
                     data={search}
                     setData={setSearch}

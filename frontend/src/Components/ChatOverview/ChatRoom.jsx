@@ -402,7 +402,7 @@ const ChatRoom = () => {
                 </button>
             </div>
             {isMobile && (<footer className="upload">
-                <div className="image-upload">
+                <div className="image-upload"  onClick={showEmojiOff}>
                     <label htmlFor="file-input">
                         <BiImageAdd/>
                     </label>
@@ -412,13 +412,9 @@ const ChatRoom = () => {
                            onChange={handleFileInputChange}/>
                 </div>
                 <div className="image-upload">
-                    <label htmlFor="file-input-folder">
-                        <BsFillFileArrowUpFill/>
-                    </label>
-                    <input id="file-input-folder"
-                           type="file"
-                           name="image"
-                           onChange={handleFileInputChange}/>
+                    <div className="image-upload">
+                        <BsEmojiSmile onClick={showEmoji}/>
+                    </div>
                 </div>
             </footer>)}
         </section>

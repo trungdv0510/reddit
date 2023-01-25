@@ -20,7 +20,6 @@ const Header = (props) => {
   const dispatch = useDispatch();
   const { setEdit, isEdit } = props;
   const [followNumber, setFollowNumber] = useState(currentUser?.followers.length);
-  //console.log('followNumber',followNumber);
   console.log('follower',follower);
   const handleEdit = () => {
     setEdit(!isEdit);
