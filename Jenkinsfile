@@ -9,7 +9,6 @@ pipeline {
             steps {
                  // Run Maven on a Unix agent.
                 sh "cd backend"
-                sh 'npm install'
                 //stop image
                 sh "docker stop 44128920/reddit-server-1 || true && docker rm 44128920/reddit-server-1 || true"
                 // Remove image
@@ -28,7 +27,6 @@ pipeline {
             steps {
                  // Run Maven on a Unix agent.
                 sh "cd ../socket"
-                sh 'npm install'
                 //stop image
                 sh "docker stop  44128920/reddit-socket || true && docker rm  44128920/reddit-socket || true"
                 // Remove image
@@ -46,7 +44,6 @@ pipeline {
             steps {
                  // Run Maven on a Unix agent.
                 sh "cd ../frontend"
-                sh 'npm install'
                 //stop image
                 sh "docker stop  44128920/reddit-front-end || true && docker rm  44128920/reddit-front-end || true"
                 // Remove image
