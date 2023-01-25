@@ -1,8 +1,8 @@
 pipeline {
    agent any
    tools {
-      maven 'Maven-3.6.3'
-      jdk 'JDK11'
+      maven 'M2_HOME'
+      jdk 'JDK13'
    }
     stages {
         stage('Build and run backend image by jenkins') {
