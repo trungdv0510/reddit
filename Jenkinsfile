@@ -5,7 +5,7 @@ pipeline {
       jdk 'JAVA_HOME'
    }
     stages {
-        stage('run backend jenkins') {
+        stage('Build and run backend image by jenkins') {
             steps {
                  // Run Maven on a Unix agent.
                 sh "cd backend"
@@ -23,7 +23,7 @@ pipeline {
         }
 
 
-         stage('run socket jenkins') {
+         stage('Build and run socket image by jenkins') {
             steps {
                  // Run Maven on a Unix agent.
                 sh "cd ../socket"
@@ -40,7 +40,7 @@ pipeline {
             }
         }
 
-        stage('run frontend jenkins') {
+        stage('Build and run frontend image by jenkins') {
             steps {
                  // Run Maven on a Unix agent.
                 sh "cd ../frontend"
