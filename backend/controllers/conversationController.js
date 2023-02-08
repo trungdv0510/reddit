@@ -4,9 +4,10 @@ const functionUtils = require("../utils/functionUtils");
 const conversationController = {
     createConversation: async (req, res) => {
         const user = await User.findById(req.body.receiverId).lean();
+        const userSender = await User.findById(req.body.senderId).lean();
         const newConversation = new Conversation({
             members: [req.body.senderId, req.body.receiverId],
-            nameGroup: user.username
+            nameGroup: user.username +'-'+userSender.username
         });
         try {
             const savedConversation = await newConversation.save();

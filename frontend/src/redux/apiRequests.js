@@ -162,6 +162,7 @@ export const getAllPosts = async (
         headers: { token: `Bearer ${token}` },
       }
     );
+    console.log("Get all post success");
     setHasMore(res.data.results.length > 0);
     dispatch(getAllPostSuccess(res.data.results));
   } catch (err) {

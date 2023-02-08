@@ -18,9 +18,6 @@ export const listContainer = {
     "https://preview.redd.it/26s9eejm8vz51.png?auto=webp&s=e38d32ee0ffa0666fade2abd62ed59037c119990",
   ],
 };
-export const baseURL = "http://192.168.0.101:8088/v1";
-export const baseURLSocket = "http://192.168.0.101:8089";
-
 export const formatTime = (time) => {
   const date = new Date(time * 1000);
   const hour = date.getUTCHours();

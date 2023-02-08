@@ -1,23 +1,17 @@
-import { BiCommentDetail, BiUpvote, BiDownvote } from "react-icons/bi";
-import { BsTrash } from "react-icons/bs";
-import { format } from "timeago.js";
-import { MdSend } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import {BiCommentDetail, BiDownvote, BiUpvote} from "react-icons/bi";
+import {BsTrash} from "react-icons/bs";
+import {format} from "timeago.js";
+import {MdSend} from "react-icons/md";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import "./post.css";
 import "../Feed/HomePage/homepage.css";
-import { fullPostToggle, setDelete } from "../../redux/navigateSlice";
-import {
-  addComment,
-  addToFavorites,
-  downvotePost,
-  upvotePost,
-} from "../../redux/apiRequests";
+import {fullPostToggle, setDelete} from "../../redux/navigateSlice";
+import {addComment, downvotePost, upvotePost,} from "../../redux/apiRequests";
 import Comments from "../Comments/Comments";
 import InputField from "../InputFields/Input";
-import React, { useState } from "react";
-import { listContainer } from "../../utils/listContainer";
-import { useEffect } from "react";
+import React, {useState} from "react";
+import {listContainer} from "../../utils/listContainer";
 
 const Posts = React.forwardRef((props, ref) => {
   const { post, comments, setDeleteComment, deleteComment } = props;
@@ -150,14 +144,14 @@ const Posts = React.forwardRef((props, ref) => {
         >
           {post?.description}
         </div>
-        {post?.imageUrl && post?.type !== "video" ? (
-          <div className="post-image-container">
-            <img className="post-image" src={post?.imageUrl} alt="postImg" />
-          </div>
-        ):(<div className="post-image-container">
+        {post?.imageUrl ? (post?.type === "img" ? (
+            <div className="post-image-container">
+              <img className="post-image" src={post?.imageUrl} alt="postImg"/>
+            </div>
+        ) : (<div className="post-image-container">
               <video src={post?.imageUrl} controls className="checkData"></video>
             </div>
-        )}
+        )) : (<></>)}
       </div>
       <div className="post-interactions">
         <div className="post-vote">
@@ -245,4 +239,3 @@ const Posts = React.forwardRef((props, ref) => {
 });
 
 export default Posts;
-<></>;

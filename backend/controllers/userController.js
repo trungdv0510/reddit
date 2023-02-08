@@ -3,12 +3,16 @@ const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const bcrypt = require("bcrypt");
 const authController = require("./authController");
-
+const minioUtils = require("../utils/minioUtils");
+const {convertToBuffer} = require("../services/fileService");
 const userController = {
   //GET A USER
   getUser: async (req, res) => {
     try {
       const user = await User.findById(req.params.id);
+      if (user.fileName){
+        user.profilePicture = await minioUtils.getFileUrl(process.env.MINIO_BUCKET_MESSAGE, user.fileName);
+      }
       res.status(200).json(user);
     } catch (err) {
       res.status(500).json(err);
@@ -40,6 +44,11 @@ const userController = {
       }
     }
     try {
+      let imageUrl = null;
+      if (req.body.fileName){
+        let fileBuffer = convertToBuffer(req.body.data);
+        imageUrl = await minioUtils.uploadFile( fileBuffer,process.env.MINIO_BUCKET_MESSAGE,req.body.fileName);
+      }
       const user = await User.findByIdAndUpdate(
         req.params.id.trim(),
         {
@@ -48,6 +57,9 @@ const userController = {
         { returnDocument: "after" }
       ).select("+password");
       const accessToken = await authController.generateAccessToken(user);
+      if (imageUrl){
+        req.body.profilePicture = imageUrl;
+      }
       if (req.body.profilePicture || req.body.theme) {
         try {
           await Post.updateMany(

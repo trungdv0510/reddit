@@ -11,8 +11,8 @@ header {
     font-weight: 700;
     font-size: 1rem;
 }
-.feed-logo{
-    height: 100px;
+.feed-logo-change {
+    height: 139px;
 }
 .search-user {
     text-align: start;
@@ -28,14 +28,22 @@ header {
     align-self: center;
     width: 100%;
 }
-.buttonClose {
-    margin-top: 0rem;
+
+.buttonCloseChangeName {
     position: absolute;
-    right: 12px;
-    bottom: 17px;
-    width: 26%;
+    right: 118px;
+    top: 92px;
+    width: 38%;
+    height: 25%;
 }
 @media screen and (min-width: 1000px) {
+    .buttonClose {
+        margin-top: 0rem;
+        position: absolute;
+        right: 12px;
+        bottom: 17px;
+        width: 26%;
+    }
     .search-add-or-rename {
         text-align: start;
         margin-left: 100%;
@@ -43,12 +51,22 @@ header {
         align-self: center;
         width: 171%;
     }
-    .buttonClose{
+    .buttonCloseChangeName{
         margin-top: 0rem;
         position: absolute;
         right: 76px;
         bottom: 21px;
         width: 7%;
+    }
+    .feed-logo-change{
+        height: 100px;
+    }
+    .buttonChange{
+        margin-top: 0rem;
+        position: absolute;
+        bottom: 25px;
+        width: 8%;
+        left: 485px;
     }
 }
 .follow{
@@ -138,10 +156,10 @@ header {
 .titleClass{
     font-size: 20px;
 }
-.buttonChange{
-    margin-top: 0rem;
+
+.buttonChange {
+    margin-top: 5%;
     position: absolute;
-    bottom: 25px;
-    width: 8%;
-    left: 485px;
+    width: 25%;
+    left: 268px;
 }

@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const minioUtils = require("../utils/minioUtils");
 const authController = {
   //REGISTER
   registerUser: async (req, res) => {
@@ -78,6 +78,9 @@ const authController = {
           path: "/",
           sameSite: "none",
         });
+        if (user.fileName){
+          user.profilePicture = await minioUtils.getFileUrl(process.env.MINIO_BUCKET_MESSAGE, user.fileName);
+        }
         const returnedUser = {
           ...user._doc,
           accessToken: accessToken,

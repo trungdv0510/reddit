@@ -98,3 +98,7 @@ label:nth-child(7) {
 .theme-container > label {
   margin-right: 5rem;
 }
+.error{
+  color: red;
+}
+

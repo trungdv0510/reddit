@@ -40,7 +40,7 @@ const AddMember = (props) => {
         dispatch(setPopupRename(!setOpen));
     }
     return (
-        <header className="feed-logo">
+        <header className="feed-logo-change">
             <div className="search-container">
                 <ReactJsAlert
                     status={status} // true or false
@@ -59,7 +59,7 @@ const AddMember = (props) => {
                 <button className={"buttonChange"} onClick={changeNameConversation}>Change</button>
             </div>
             <div>
-                <button className={"buttonClose"} onClick={closePopUp}>Close</button>
+                <button className={"buttonCloseChangeName"} onClick={closePopUp}>Close</button>
             </div>
         </header>
     );
